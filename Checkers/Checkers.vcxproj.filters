@@ -21,12 +21,18 @@
     <ClCompile Include="Checker.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Checker.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="Interface.h">
+    <ClInclude Include="Board.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Params.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
