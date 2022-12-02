@@ -1,4 +1,5 @@
 #include <iostream>
+#include <list>
 #include <SFML/Graphics.hpp>
 #include "Params.h"
 using namespace std;
@@ -32,7 +33,7 @@ public:
 	void setCorrectPosition(int x, int y);
 	void switchIsMove();
 	void draw(RenderWindow& window);
-	bool correctMotion();
+	bool correctMotion(list<Checker>& list);
 	int getBoardX() { return (actual.x - WIGTH_EDGE) / LENGTH_TILE; }
 	int getBoardY() { return (actual.y - WIGTH_EDGE) / LENGTH_TILE; }
 	int getPrevBoardX() { return (prev.x - WIGTH_EDGE) / LENGTH_TILE; }

@@ -60,7 +60,7 @@ int main()
 					if (iter->getIsMove())
 					{
 						iter->setPosition(((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE)* LENGTH_TILE + WIGTH_EDGE, ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE)* LENGTH_TILE + WIGTH_EDGE);
-						if (iter->correctMotion())
+						if (iter->correctMotion(checkers))
 						{
 							iter->switchIsMove(); //то не можем двигать спрайт
 							iter->setCorrectPosition(iter->getActualX(), iter->getActualY());
