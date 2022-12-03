@@ -39,3 +39,28 @@ bool Queen::cutDownChecker(list<Checker>& list)
 	}
 	return false;
 }
+bool Queen::correctMotion(list<Checker>& list)
+{
+	if (this->outOfBounds()) //проверка выхода за границы
+	{
+		cout << "OutOfBounds" << endl;
+		return false;
+	}
+	if (this->stepOnChecker(list)) //проверка шага на шашку
+	{
+		cout << "StepOnChecker" << endl;
+		return false;
+	}
+	if (this->cutDownChecker(list))
+	{
+		cout << "CorrectCutDown" << endl;
+		return true;
+	}
+	else
+		if (this->stepForward()) //проверка на шаг вперед
+		{
+			cout << "WrongStepForward" << endl;
+			return false;
+		}
+	return true;
+}

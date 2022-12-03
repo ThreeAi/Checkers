@@ -37,7 +37,7 @@ public:
 	void setCorrectPosition(int x, int y);
 	void switchIsMove();
 	void draw(RenderWindow& window);
-	bool correctMotion(list<Checker>& list);
+	virtual bool correctMotion(list<Checker>& list);
 	int getBoardX() { return (actual.x - WIGTH_EDGE) / LENGTH_TILE; }
 	int getBoardY() { return (actual.y - WIGTH_EDGE) / LENGTH_TILE; }
 	int getPrevBoardX() { return (prev.x - WIGTH_EDGE) / LENGTH_TILE; }
@@ -54,4 +54,5 @@ public:
 	void initialization();
 	bool stepForward();
 	bool cutDownChecker(list<Checker>& list);
+	bool correctMotion(list<Checker>& list);
 };

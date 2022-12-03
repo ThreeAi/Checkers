@@ -73,12 +73,16 @@ int main()
 						turn = !turn; //при правильном ходе меньятся игрок 
 						cout << "White " << Checker::countWhite << endl;
 						cout << "Black " << Checker::countBlack << endl;
+						for (auto iter : checkers)
+						{
+							cout << typeid(iter).name() << endl;
+						}
 						if (!iter->getColor() && iter->getBoardY() == 7)
 						{
 							Queen *temp = new Queen(iter->getBoardX(), iter->getBoardY(), 0);
 							temp->initialization();
 							checkers.push_front(*temp);
-							checkers.erase(iter);							
+							checkers.erase(iter);								
 						}
 					}
 					else
