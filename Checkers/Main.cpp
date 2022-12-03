@@ -32,7 +32,7 @@ int main()
 	Board d = Board();
 	d.initialization();
 	int dX = 0, dY = 0;
-
+	bool turn = false;
 	while (window.isOpen())
 	{
 		Vector2i pixelPos = Mouse::getPosition(window);
@@ -46,44 +46,52 @@ int main()
 				{
 					int y = iter->getActualY() + 35;
 					int x = iter->getActualX() + 35;
-					if (sqrt((pixelPos.y - y) * (pixelPos.y - y) + (pixelPos.x - x) * (pixelPos.x - x)) <= CHECKERS_RADIUS)//и при этом координата курсора попадает в спрайт
+					if (sqrt((pixelPos.y - y) * (pixelPos.y - y) + (pixelPos.x - x) * (pixelPos.x - x)) <= CHECKERS_RADIUS) //&& turn == iter->getColor())//и при этом координата курсора попадает в спрайт
 					{
+						checkers.splice(checkers.end(), checkers, iter); //переместим активную шашку в конец
 						std::cout << "isClicked!\n";//выводим в консоль сообщение об этом
 						dX = pixelPos.x - iter->getActualX();//делаем разность между позицией курсора и спрайта.для корректировки нажатия
 						dY = pixelPos.y - iter->getActualY();//тоже самое по игреку
 						iter->switchIsMove();//можем двигать спрайт							
 					}
 				}
+			auto iter = checkers.end();
+			--iter; 
+			if (iter->getIsMove()) //если можем двигать
+			{
+				iter->setPosition(pixelPos.x - dX, pixelPos.y - dY);
+			}
 			if ((event.type == Event::MouseButtonReleased && event.key.code == Mouse::Left))//если отпустили клавишу
-				for (list<Checker>::iterator iter = checkers.begin(); iter != checkers.end(); iter++)
+			{
+				if (iter->getIsMove())
 				{
-					if (iter->getIsMove())
+					iter->setPosition(((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE, ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE);
+					if (iter->correctMotion(checkers))
 					{
-						iter->setPosition(((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE)* LENGTH_TILE + WIGTH_EDGE, ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE)* LENGTH_TILE + WIGTH_EDGE);
-						if (iter->correctMotion(checkers))
+						iter->switchIsMove(); //то не можем двигать спрайт
+						iter->setCorrectPosition(iter->getActualX(), iter->getActualY());
+						turn = !turn; //при правильном ходе меньятся игрок 
+						cout << "White " << Checker::countWhite << endl;
+						cout << "Black " << Checker::countBlack << endl;
+						if (!iter->getColor() && iter->getBoardY() == 7)
 						{
-							iter->switchIsMove(); //то не можем двигать спрайт
-							iter->setCorrectPosition(iter->getActualX(), iter->getActualY());
-						}
-						else
-						{
-							iter->switchIsMove(); //то не можем двигать спрайт
-							iter->setCorrectPosition(iter->getPrevX(), iter->getPrevY());
+							Queen *temp = new Queen(iter->getBoardX(), iter->getBoardY(), 0);
+							temp->initialization();
+							checkers.push_front(*temp);
+							checkers.erase(iter);							
 						}
 					}
-				}
-			for (list<Checker>::iterator iter = checkers.begin(); iter != checkers.end(); iter++)
-			{
-				if (iter->getIsMove()) {//если можем двигать
-					iter->setPosition(pixelPos.x - dX, pixelPos.y - dY);
+					else
+					{
+						iter->switchIsMove(); //то не можем двигать спрайт
+						iter->setCorrectPosition(iter->getPrevX(), iter->getPrevY());
+					}
 				}
 			}
+
 		}
 		window.clear();
 		d.draw(window);
-		//cout << checkers.front().getActualX() << " " << checkers.front().getActualY() << checkers.front().getColor() << endl;
-		checkers.front().draw(window);
-		window.draw(checkers.front().getShape());
 		for (auto iter : checkers)
 		{
 			iter.draw(window);

@@ -145,6 +145,7 @@
     <ClCompile Include="Checker.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Queen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Checker.h" />
