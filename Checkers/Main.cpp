@@ -89,15 +89,15 @@ int main()
 			{
 				if ((*iter)->getIsMove())
 				{
-					(*iter)->setPosition(((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE, ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE);
-					Queen* temp = dynamic_cast<Queen*>(*iter);
-					if (((temp == NULL) && (*iter)->correctMotion(checkers, turn, multiple)) || (temp != NULL && temp->correctMotion(checkers)))
+					(*iter)->setPosition(((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE, ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE); //присвоение фактических координат с учетом магнита 
+					Queen* temp = dynamic_cast<Queen*>(*iter); //если дамка 
+					if (((temp == NULL) && (*iter)->correctMotion(checkers, turn, multiple)) || (temp != NULL && temp->correctMotion(checkers))) //если ход правильный 
 					{
 						(*iter)->switchIsMove(); //то не можем двигать спрайт
-						(*iter)->setCorrectPosition((*iter)->getActualX(), (*iter)->getActualY()); 
+						(*iter)->setCorrectPosition((*iter)->getActualX(), (*iter)->getActualY()); //ставим на фактические координаты 
 						cout << "White " << Checker::countWhite << endl;
 						cout << "Black " << Checker::countBlack << endl;
-						if ((!(*iter)->getColor() && (*iter)->getBoardY() == 7) || ((*iter)->getColor() && (*iter)->getBoardY() == 0))
+						if ((!(*iter)->getColor() && (*iter)->getBoardY() == 7) || ((*iter)->getColor() && (*iter)->getBoardY() == 0)) //проверка на стоановление дамки 
 						{
 							Queen *temp = new Queen((*iter)->getBoardX(), (*iter)->getBoardY(), (*iter)->getColor());
 							temp->initialization();
@@ -106,7 +106,7 @@ int main()
 							checkers.erase(iter);								
 						}
 					}
-					else
+					else  //если ход не правильный ставим на предыдущее место 
 					{
 						(*iter)->switchIsMove(); //то не можем двигать спрайт
 						(*iter)->setCorrectPosition((*iter)->getPrevX(), (*iter)->getPrevY());

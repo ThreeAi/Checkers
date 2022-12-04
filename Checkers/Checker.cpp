@@ -82,14 +82,14 @@ bool Checker::stepOnChecker(list<Checker*>& list)
 {
 	for (auto iter = list.begin(); iter != list.end(); iter++)
 	{
-		if (((*iter)->getPrevX() == this->getActualX()) && ((*iter)->getPrevY() == this->getActualY()))
+		if (((*iter)->getPrevX() == this->getActualX()) && ((*iter)->getPrevY() == this->getActualY())) //покоординатная проверка заступа на шашку
 			return true;
 	}
 	return false;
 }
 bool Checker::stepForward()
 {
-	if ((this->getColor() && !(abs(this->getBoardX() - this->getPrevBoardX()) == 1 && (this->getBoardY() - this->getPrevBoardY()) == -1))
+	if ((this->getColor() && !(abs(this->getBoardX() - this->getPrevBoardX()) == 1 && (this->getBoardY() - this->getPrevBoardY()) == -1))  //возможность ходить только вперед по диагоналям на 1
 		|| (!this->getColor() && !(abs(this->getBoardX() - this->getPrevBoardX()) == 1 && (this->getBoardY() - this->getPrevBoardY()) == 1)))
 		return true;
 	else
@@ -97,7 +97,7 @@ bool Checker::stepForward()
 }
 bool Checker::cutDownChecker(list<Checker*>& list)
 {
-	auto find = find_if(list.begin(), list.end(), [this](Checker* c)
+	auto find = find_if(list.begin(), list.end(), [this](Checker* c)  //нахождение потанциально срубленной шашки
 		{
 			return c->getColor() != this->getColor() && c->getBoardX() == (this->getBoardX() + this->getPrevBoardX()) / 2 && c->getBoardY() == (this->getBoardY() + this->getPrevBoardY()) / 2;
 		});
@@ -115,19 +115,19 @@ bool Checker::cutDownChecker(list<Checker*>& list)
 }
 bool Checker::possibilityStep(list<Checker*>& list, bool& multiple)
 {
-	for (auto iter = list.begin(); iter != list.end(); iter++)
+	for (auto iter = list.begin(); iter != list.end(); iter++) 
 	{
-		if (((*iter)->getColor() != this->getColor()) && (abs((*iter)->getBoardX() - this->getBoardX()) == 1) && (abs((*iter)->getBoardY() - this->getBoardY()) == 1))
+		if (((*iter)->getColor() != this->getColor()) && (abs((*iter)->getBoardX() - this->getBoardX()) == 1) && (abs((*iter)->getBoardY() - this->getBoardY()) == 1))  //поиск шашки которую можно срубить 
 		{
-			auto find = find_if(list.begin(), list.end(), [this, iter](Checker* c)
+			auto find = find_if(list.begin(), list.end(), [this, iter](Checker* c) //поиск шашки которая может помешать срубу
 				{
 					return c->getBoardX() == this->getBoardX() - (this->getBoardX() - (*iter)->getBoardX()) * 2 && c->getBoardY() == this->getBoardY() - (this->getBoardY() - (*iter)->getBoardY()) * 2;
 				});
-			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7)
+			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7) //если потанциально срубленная шашка находиться не по периметру + если не нашлась шашка мешающая срубу
 			{
 				cout << "PossibleNextStep" << endl;
 				cout << (*iter)->getBoardX() << " " << (*iter)->getBoardY() << endl;
-				multiple = true;
+				multiple = true;     //множественный сруб возможно передвигать только последнюю шашку
 				return true;
 			}
 		}
