@@ -17,49 +17,51 @@ void Queen::initialization()
 }
 bool Queen::stepForward()
 {
-	if (abs(this->getBoardX() - this->getPrevBoardX()) ==  abs(this->getBoardY() - this->getPrevBoardY()))
+	if (!(abs(this->getBoardX() - this->getPrevBoardX()) == abs(this->getBoardY() - this->getPrevBoardY())))
 		return true;
 	else
 		return false;
 }
-bool Queen::cutDownChecker(list<Checker>& list)
+bool Queen::cutDownChecker(list<Checker*>& list)
 {
-	auto find = find_if(list.begin(), list.end(), [this](Checker c)
+	auto find = find_if(list.begin(), list.end(), [this](Checker* c)
 		{
-			return c.getColor() != this->getColor() && abs(c.getBoardX() - this->getBoardX()) == abs(c.getBoardY() - this->getBoardY());
+			return ((c->getBoardX() - this->getPrevBoardX()) * (this->getBoardY() - this->getPrevBoardY()) - ((c->getBoardY() - this->getPrevBoardY()) * (this->getBoardX() - this->getPrevBoardX()))) == 0 &&
+				((c->getBoardX() > this->getPrevBoardX() && c->getBoardX() < this->getBoardX()) || (c->getBoardX() < this->getPrevBoardX() && c->getBoardX() > this->getBoardX()));
 		});
 	if (abs(this->getBoardX() - this->getPrevBoardX()) == abs(this->getBoardY() - this->getPrevBoardY()) && find != list.end())
 	{
-		if (find->getColor())
+		if ((*find)->getColor())
 			countBlack--;
 		else
 			countWhite--;
+		delete* find;
 		list.erase(find);
 		return true;
 	}
 	return false;
 }
-bool Queen::correctMotion(list<Checker>& list)
+bool Queen::correctMotion(list<Checker*>& list)
 {
 	if (this->outOfBounds()) //проверка выхода за границы
 	{
-		cout << "OutOfBounds" << endl;
+		cout << "QueenOutOfBounds" << endl;
 		return false;
 	}
 	if (this->stepOnChecker(list)) //проверка шага на шашку
 	{
-		cout << "StepOnChecker" << endl;
+		cout << "QueenStepOnChecker" << endl;
 		return false;
 	}
 	if (this->cutDownChecker(list))
 	{
-		cout << "CorrectCutDown" << endl;
+		cout << "QueenCorrectCutDown" << endl;
 		return true;
 	}
 	else
 		if (this->stepForward()) //проверка на шаг вперед
 		{
-			cout << "WrongStepForward" << endl;
+			cout << "QueenWrongStep" << endl;
 			return false;
 		}
 	return true;

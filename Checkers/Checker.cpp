@@ -41,7 +41,7 @@ void Checker::draw(RenderWindow& window)
 {
 	window.draw(shapeChecker);
 }
-bool Checker::correctMotion(list<Checker>& list)
+bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple)
 {
 	//cout << this->getBoardX() << " " << this->getBoardY() << " " << this->getPrevBoardX() << " " << this->getPrevBoardY() << endl;
 	//cout << abs(this->getBoardX() - this->getPrevBoardX()) << " " << abs(this->getBoardY() - this->getPrevBoardY()) << endl;
@@ -58,6 +58,8 @@ bool Checker::correctMotion(list<Checker>& list)
 	if (this->cutDownChecker(list))
 	{
 		cout << "CorrectCutDown" << endl;
+		if (!this->possibilityStep(list, multiple)) //проверка следущего сруба 
+			turn = !turn;
 		return true;
 	}
 	else
@@ -66,6 +68,7 @@ bool Checker::correctMotion(list<Checker>& list)
 		cout << "WrongStepForward" << endl;
 		return false;
 	}
+	turn = !turn;
 	return true;
 }
 bool Checker::outOfBounds()
@@ -75,11 +78,11 @@ bool Checker::outOfBounds()
 	else
 		return false;
 }
-bool Checker::stepOnChecker(list<Checker>& list)
+bool Checker::stepOnChecker(list<Checker*>& list)
 {
 	for (auto iter = list.begin(); iter != list.end(); iter++)
 	{
-		if ((iter->getPrevX() == this->getActualX()) && (iter->getPrevY() == this->getActualY()))
+		if (((*iter)->getPrevX() == this->getActualX()) && ((*iter)->getPrevY() == this->getActualY()))
 			return true;
 	}
 	return false;
@@ -92,20 +95,44 @@ bool Checker::stepForward()
 	else
 		return false;
 }
-bool Checker::cutDownChecker(list<Checker>& list)
+bool Checker::cutDownChecker(list<Checker*>& list)
 {
-	auto find = find_if(list.begin(), list.end(), [this](Checker c)
+	auto find = find_if(list.begin(), list.end(), [this](Checker* c)
 		{
-			return c.getColor() != this->getColor() && c.getBoardX() == (this->getBoardX() + this->getPrevBoardX()) / 2 && c.getBoardY() == (this->getBoardY() + this->getPrevBoardY()) / 2;
+			return c->getColor() != this->getColor() && c->getBoardX() == (this->getBoardX() + this->getPrevBoardX()) / 2 && c->getBoardY() == (this->getBoardY() + this->getPrevBoardY()) / 2;
 		});
-	if (abs(this->getBoardX() - this->getPrevBoardX()) == 2 && abs(this->getBoardY() - this->getPrevBoardY()) == 2 && find != list.end())
+	if (find != list.end() && abs(this->getBoardX() - this->getPrevBoardX()) == 2 && abs(this->getBoardY() - this->getPrevBoardY()) == 2)   //удаление срубленной шашки 
 	{
-		if (find->getColor())
+		if ((* find)->getColor())
 			countBlack--;
 		else
 			countWhite--;
+		delete* find;
 		list.erase(find);
 		return true;
 	}
+	return false;
+}
+bool Checker::possibilityStep(list<Checker*>& list, bool& multiple)
+{
+	for (auto iter = list.begin(); iter != list.end(); iter++)
+	{
+		if (((*iter)->getColor() != this->getColor()) && (abs((*iter)->getBoardX() - this->getBoardX()) == 1) && (abs((*iter)->getBoardY() - this->getBoardY()) == 1))
+		{
+			auto find = find_if(list.begin(), list.end(), [this, iter](Checker* c)
+				{
+					return c->getBoardX() == this->getBoardX() - (this->getBoardX() - (*iter)->getBoardX()) * 2 && c->getBoardY() == this->getBoardY() - (this->getBoardY() - (*iter)->getBoardY()) * 2;
+				});
+			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7)
+			{
+				cout << "PossibleNextStep" << endl;
+				cout << (*iter)->getBoardX() << " " << (*iter)->getBoardY() << endl;
+				multiple = true;
+				return true;
+			}
+		}
+	}
+	cout << "NotPossibleNextStep" << endl;
+	multiple = false;
 	return false;
 }

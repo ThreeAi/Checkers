@@ -23,8 +23,6 @@ public:
 	static int countWhite;
 	static int countBlack;
 	Checker(int bx, int by, bool color);
-	int getCountBlack() { return countBlack; }
-	int getCountWhite() { return countWhite; }
 	bool getIsMove(){ return isMove; }
 	bool getColor() { return color; }
 	int getActualX() { return actual.x; }
@@ -37,15 +35,16 @@ public:
 	void setCorrectPosition(int x, int y);
 	void switchIsMove();
 	void draw(RenderWindow& window);
-	virtual bool correctMotion(list<Checker>& list);
+	virtual bool correctMotion(list<Checker*>& list, bool& turn, bool& multiple);
 	int getBoardX() { return (actual.x - WIGTH_EDGE) / LENGTH_TILE; }
 	int getBoardY() { return (actual.y - WIGTH_EDGE) / LENGTH_TILE; }
 	int getPrevBoardX() { return (prev.x - WIGTH_EDGE) / LENGTH_TILE; }
 	int getPrevBoardY() { return (prev.y - WIGTH_EDGE) / LENGTH_TILE; }
 	bool outOfBounds();
-	bool stepOnChecker(list<Checker>& list);
+	bool stepOnChecker(list<Checker*>& list);
 	virtual bool stepForward();
-	virtual bool cutDownChecker(list<Checker>& list);
+	virtual bool cutDownChecker(list<Checker*>& list);
+	bool possibilityStep(list<Checker*>& list, bool& multyple);
 };
 class Queen : public Checker
 {
@@ -53,6 +52,6 @@ public:
 	Queen(int bx, int by, bool color) : Checker(bx, by, color) {};
 	void initialization();
 	bool stepForward();
-	bool cutDownChecker(list<Checker>& list);
-	bool correctMotion(list<Checker>& list);
+	bool cutDownChecker(list<Checker*>& list);
+	bool correctMotion(list<Checker*>& list);
 };
