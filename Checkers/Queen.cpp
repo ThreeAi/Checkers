@@ -15,12 +15,20 @@ void Queen::initialization()
 		shapeChecker.setTextureRect(IntRect(339, 0, 112, 112));
 	shapeChecker.setPosition(actual.x, actual.y);
 }
-bool Queen::stepForward()
+bool Queen::stepForward(list<Checker*>& list)
 {
 	if (!(abs(this->getBoardX() - this->getPrevBoardX()) == abs(this->getBoardY() - this->getPrevBoardY())))
 		return true;
-	else
-		return false;
+	auto find = find_if(list.begin(), list.end(), [this](Checker* c)
+		{
+			return c->getColor() == this->getColor() && ((c->getBoardX() - this->getPrevBoardX()) * (this->getBoardY() - this->getPrevBoardY()) - ((c->getBoardY() - this->getPrevBoardY()) * (this->getBoardX() - this->getPrevBoardX()))) == 0 &&
+				((c->getBoardX() > this->getPrevBoardX() && c->getBoardX() < this->getBoardX()) || (c->getBoardX() < this->getPrevBoardX() && c->getBoardX() > this->getBoardX()));
+		});
+	if (abs(this->getBoardX() - this->getPrevBoardX()) == abs(this->getBoardY() - this->getPrevBoardY()) && find != list.end())
+	{
+		return true;
+	}
+	return false;
 }
 bool Queen::cutDownChecker(list<Checker*>& list)
 {
@@ -61,7 +69,7 @@ bool Queen::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int 
 		return true;
 	}
 	else
-		if (this->stepForward()) //проверка на шаг вперед
+		if (this->stepForward(list)) //проверка на шаг вперед
 		{
 			cout << "QueenWrongStep" << endl;
 			return false;

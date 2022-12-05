@@ -143,6 +143,9 @@ int main()
 		}
 		window.display();
 	}
-
+	for (list<Checker*>::iterator iter = checkers.begin(); iter != checkers.end(); iter++)
+	{
+		delete* iter;
+	}
 	return 0;
 }

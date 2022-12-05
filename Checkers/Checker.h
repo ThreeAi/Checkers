@@ -42,7 +42,7 @@ public:
 	int getPrevBoardY() { return (prev.y - WIGTH_EDGE) / LENGTH_TILE; }
 	bool outOfBounds(int posx, int posy);
 	bool stepOnChecker(list<Checker*>& list);
-	virtual bool stepForward();
+	bool stepForward();
 	virtual bool cutDownChecker(list<Checker*>& list);
 	virtual bool possibilityStep(list<Checker*>& list, bool& multiple);
 };
@@ -51,7 +51,7 @@ class Queen : public Checker
 public:
 	Queen(int bx, int by, bool color) : Checker(bx, by, color) {};
 	void initialization();
-	bool stepForward();
+	bool stepForward(list<Checker*>& list);
 	bool cutDownChecker(list<Checker*>& list);
 	bool correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int posx, int posy);
 	bool possibilityStep(list<Checker*>& list, bool& multiple);
