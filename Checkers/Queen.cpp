@@ -26,7 +26,7 @@ bool Queen::cutDownChecker(list<Checker*>& list)
 {
 	auto find = find_if(list.begin(), list.end(), [this](Checker* c)
 		{
-			return ((c->getBoardX() - this->getPrevBoardX()) * (this->getBoardY() - this->getPrevBoardY()) - ((c->getBoardY() - this->getPrevBoardY()) * (this->getBoardX() - this->getPrevBoardX()))) == 0 &&
+			return c->getColor() != this->getColor() && ((c->getBoardX() - this->getPrevBoardX()) * (this->getBoardY() - this->getPrevBoardY()) - ((c->getBoardY() - this->getPrevBoardY()) * (this->getBoardX() - this->getPrevBoardX()))) == 0 &&
 				((c->getBoardX() > this->getPrevBoardX() && c->getBoardX() < this->getBoardX()) || (c->getBoardX() < this->getPrevBoardX() && c->getBoardX() > this->getBoardX()));
 		});
 	if (abs(this->getBoardX() - this->getPrevBoardX()) == abs(this->getBoardY() - this->getPrevBoardY()) && find != list.end())
@@ -41,7 +41,7 @@ bool Queen::cutDownChecker(list<Checker*>& list)
 	}
 	return false;
 }
-bool Queen::correctMotion(list<Checker*>& list)
+bool Queen::correctMotion(list<Checker*>& list, bool& turn, bool& multiple)
 {
 	if (this->outOfBounds()) //проверка выхода за границы
 	{
@@ -56,6 +56,8 @@ bool Queen::correctMotion(list<Checker*>& list)
 	if (this->cutDownChecker(list))
 	{
 		cout << "QueenCorrectCutDown" << endl;
+		if (!this->possibilityStep(list, multiple)) //проверка следущего сруба 
+			turn = !turn;
 		return true;
 	}
 	else
@@ -65,4 +67,28 @@ bool Queen::correctMotion(list<Checker*>& list)
 			return false;
 		}
 	return true;
+}
+bool Queen::possibilityStep(list<Checker*>& list, bool& multiple)
+{
+	for (auto iter = list.begin(); iter != list.end(); iter++)
+	{
+		if (((*iter)->getColor() != this->getColor()) && (abs((*iter)->getBoardX() - this->getBoardX()) == abs((*iter)->getBoardY() - this->getBoardY())))  //поиск шашки которую можно срубить 
+		{
+			cout << (*iter)->getBoardX() << " " << (*iter)->getBoardY() << endl;
+			auto find = find_if(list.begin(), list.end(), [this, iter](Checker* c) //поиск шашки которая может помешать срубу
+				{
+					return c->getBoardX() == this->getBoardX() - ((this->getBoardX() - (*iter)->getBoardX())) - (this->getBoardX() - (*iter)->getBoardX())/abs((this->getBoardX() - (*iter)->getBoardX())) && c->getBoardY() == this->getBoardY() - ((this->getBoardY() - (*iter)->getBoardY())) - (this->getBoardY() - (*iter)->getBoardY()) / abs((this->getBoardY() - (*iter)->getBoardY()));
+				});
+			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7) //если потанциально срубленная шашка находиться не по периметру + если не нашлась шашка мешающая срубу
+			{
+				cout << "PossibleNextStep" << endl;
+				cout << (*iter)->getBoardX() << " " << (*iter)->getBoardY() << endl;
+				multiple = true;     //множественный сруб возможно передвигать только последнюю шашку
+				return true;
+			}
+		}
+	}
+	cout << "NotPossibleNextStep" << endl;
+	multiple = false;
+	return false;
 }

@@ -44,7 +44,7 @@ public:
 	bool stepOnChecker(list<Checker*>& list);
 	virtual bool stepForward();
 	virtual bool cutDownChecker(list<Checker*>& list);
-	bool possibilityStep(list<Checker*>& list, bool& multyple);
+	virtual bool possibilityStep(list<Checker*>& list, bool& multiple);
 };
 class Queen : public Checker
 {
@@ -53,5 +53,6 @@ public:
 	void initialization();
 	bool stepForward();
 	bool cutDownChecker(list<Checker*>& list);
-	bool correctMotion(list<Checker*>& list);
+	bool correctMotion(list<Checker*>& list, bool& turn, bool& multiple);
+	bool possibilityStep(list<Checker*>& list, bool& multiple);
 };

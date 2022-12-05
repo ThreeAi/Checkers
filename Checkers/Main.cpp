@@ -89,9 +89,10 @@ int main()
 			{
 				if ((*iter)->getIsMove())
 				{
+					//cout << ((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE << " " << ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE << endl;
 					(*iter)->setPosition(((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE, ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE); //присвоение фактических координат с учетом магнита 
 					Queen* temp = dynamic_cast<Queen*>(*iter); //если дамка 
-					if (((temp == NULL) && (*iter)->correctMotion(checkers, turn, multiple)) || (temp != NULL && temp->correctMotion(checkers))) //если ход правильный 
+					if (((temp == NULL) && (*iter)->correctMotion(checkers, turn, multiple)) || (temp != NULL && temp->correctMotion(checkers, turn, multiple))) //если ход правильный 
 					{
 						(*iter)->switchIsMove(); //то не можем двигать спрайт
 						(*iter)->setCorrectPosition((*iter)->getActualX(), (*iter)->getActualY()); //ставим на фактические координаты 

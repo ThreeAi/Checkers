@@ -73,7 +73,8 @@ bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple)
 }
 bool Checker::outOfBounds()
 {
-	if (actual.x <= 0 || actual.x >= (2 * WIGTH_EDGE + 8 * LENGTH_TILE) || actual.y <= 0 || actual.y >= (2 * WIGTH_EDGE + 8 * LENGTH_TILE)) //проверка выхода за границы
+	cout << actual.x << " " << actual.y << endl;
+	if (actual.x <= 0 || actual.x >= (WIGTH_EDGE + 8 * LENGTH_TILE) || actual.y <= 0 || actual.y >= (WIGTH_EDGE + 8 * LENGTH_TILE)) //проверка выхода за границы
 		return true;
 	else
 		return false;
@@ -99,7 +100,7 @@ bool Checker::cutDownChecker(list<Checker*>& list)
 {
 	auto find = find_if(list.begin(), list.end(), [this](Checker* c)  //нахождение потанциально срубленной шашки
 		{
-			return c->getColor() != this->getColor() && c->getBoardX() == (this->getBoardX() + this->getPrevBoardX()) / 2 && c->getBoardY() == (this->getBoardY() + this->getPrevBoardY()) / 2;
+			return  c->getColor() != this->getColor() && c->getBoardX() == (this->getBoardX() + this->getPrevBoardX()) / 2 && c->getBoardY() == (this->getBoardY() + this->getPrevBoardY()) / 2;
 		});
 	if (find != list.end() && abs(this->getBoardX() - this->getPrevBoardX()) == 2 && abs(this->getBoardY() - this->getPrevBoardY()) == 2)   //удаление срубленной шашки 
 	{
