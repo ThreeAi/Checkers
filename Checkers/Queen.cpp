@@ -41,9 +41,9 @@ bool Queen::cutDownChecker(list<Checker*>& list)
 	}
 	return false;
 }
-bool Queen::correctMotion(list<Checker*>& list, bool& turn, bool& multiple)
+bool Queen::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int posx, int posy)
 {
-	if (this->outOfBounds()) //проверка выхода за границы
+	if (this->outOfBounds(posx, posy)) //проверка выхода за границы
 	{
 		cout << "QueenOutOfBounds" << endl;
 		return false;
@@ -66,6 +66,7 @@ bool Queen::correctMotion(list<Checker*>& list, bool& turn, bool& multiple)
 			cout << "QueenWrongStep" << endl;
 			return false;
 		}
+	turn = !turn;
 	return true;
 }
 bool Queen::possibilityStep(list<Checker*>& list, bool& multiple)

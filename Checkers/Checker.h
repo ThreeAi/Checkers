@@ -35,12 +35,12 @@ public:
 	void setCorrectPosition(int x, int y);
 	void switchIsMove();
 	void draw(RenderWindow& window);
-	virtual bool correctMotion(list<Checker*>& list, bool& turn, bool& multiple);
+	virtual bool correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int posx, int posy);
 	int getBoardX() { return (actual.x - WIGTH_EDGE) / LENGTH_TILE; }
 	int getBoardY() { return (actual.y - WIGTH_EDGE) / LENGTH_TILE; }
 	int getPrevBoardX() { return (prev.x - WIGTH_EDGE) / LENGTH_TILE; }
 	int getPrevBoardY() { return (prev.y - WIGTH_EDGE) / LENGTH_TILE; }
-	bool outOfBounds();
+	bool outOfBounds(int posx, int posy);
 	bool stepOnChecker(list<Checker*>& list);
 	virtual bool stepForward();
 	virtual bool cutDownChecker(list<Checker*>& list);
@@ -53,6 +53,6 @@ public:
 	void initialization();
 	bool stepForward();
 	bool cutDownChecker(list<Checker*>& list);
-	bool correctMotion(list<Checker*>& list, bool& turn, bool& multiple);
+	bool correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int posx, int posy);
 	bool possibilityStep(list<Checker*>& list, bool& multiple);
 };

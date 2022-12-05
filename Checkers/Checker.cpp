@@ -41,11 +41,11 @@ void Checker::draw(RenderWindow& window)
 {
 	window.draw(shapeChecker);
 }
-bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple)
+bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int posx, int posy)
 {
 	//cout << this->getBoardX() << " " << this->getBoardY() << " " << this->getPrevBoardX() << " " << this->getPrevBoardY() << endl;
 	//cout << abs(this->getBoardX() - this->getPrevBoardX()) << " " << abs(this->getBoardY() - this->getPrevBoardY()) << endl;
-	if (this->outOfBounds()) //проверка выхода за границы
+	if (this->outOfBounds(posx, posy)) //проверка выхода за границы
 	{
 		cout << "OutOfBounds" << endl;
 		return false;
@@ -71,13 +71,16 @@ bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple)
 	turn = !turn;
 	return true;
 }
-bool Checker::outOfBounds()
+bool Checker::outOfBounds(int posx, int posy)
 {
-	cout << actual.x << " " << actual.y << endl;
-	if (actual.x <= 0 || actual.x >= (WIGTH_EDGE + 8 * LENGTH_TILE) || actual.y <= 0 || actual.y >= (WIGTH_EDGE + 8 * LENGTH_TILE)) //проверка выхода за границы
+	cout << posx << " " << posy << endl;
+	if (posx  <= 8  || posx >= (WIGTH_EDGE + 8 * LENGTH_TILE)  || posy  <= 8  || posy >= (WIGTH_EDGE + 8 * LENGTH_TILE)) //проверка выхода за границы
 		return true;
 	else
+	{
+		this->setPosition(((posx - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE, ((posy - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE);
 		return false;
+	}
 }
 bool Checker::stepOnChecker(list<Checker*>& list)
 {

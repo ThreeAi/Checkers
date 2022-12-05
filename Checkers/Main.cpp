@@ -6,7 +6,7 @@
 #include "Checker.h"
 
 using namespace sf;
-using namespace std; 
+using namespace std;
 int main()
 {
 	Font font;
@@ -14,11 +14,11 @@ int main()
 	Text text("", font, 70);
 	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 	RenderWindow window(VideoMode(LENGTH_TILE * 8 + 2 * WIGTH_EDGE, LENGTH_TILE * 8 + 2 * WIGTH_EDGE), "Checkers");
-	text.setPosition(window.getView().getCenter().x-230, window.getView().getCenter().y-75);
-	list<Checker *> checkers;
+	text.setPosition(window.getView().getCenter().x - 230, window.getView().getCenter().y - 75);
+	list<Checker*> checkers;
 	for (int i = 1; i <= 23; i = i + 2)										//расставляем шашки 
 	{
-		if((i / 8) % 2 == 1)
+		if ((i / 8) % 2 == 1)
 			checkers.push_back(new Checker(i % 8 - 1, i / 8, 0));
 		else
 			checkers.push_back(new Checker(i % 8, i / 8, 0));
@@ -30,9 +30,9 @@ int main()
 		else
 			checkers.push_back(new Checker(i % 8 + 1, i / 8, 1));
 	}
-	for (list<Checker *>::iterator iter = checkers.begin(); iter != checkers.end(); iter++)		//инициализируем 
+	for (list<Checker*>::iterator iter = checkers.begin(); iter != checkers.end(); iter++)		//инициализируем 
 	{
-		(* iter)->initialization();
+		(*iter)->initialization();
 	}
 	Board d = Board();
 	d.initialization();
@@ -80,7 +80,7 @@ int main()
 					}
 				}
 			auto iter = checkers.end();
-			--iter; 
+			--iter;
 			if ((*iter)->getIsMove()) //если можем двигать
 			{
 				(*iter)->setPosition(pixelPos.x - dX, pixelPos.y - dY);
@@ -90,21 +90,28 @@ int main()
 				if ((*iter)->getIsMove())
 				{
 					//cout << ((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE << " " << ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE << endl;
-					(*iter)->setPosition(((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE, ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE); //присвоение фактических координат с учетом магнита 
 					Queen* temp = dynamic_cast<Queen*>(*iter); //если дамка 
-					if (((temp == NULL) && (*iter)->correctMotion(checkers, turn, multiple)) || (temp != NULL && temp->correctMotion(checkers, turn, multiple))) //если ход правильный 
+					if (((temp == NULL) && (*iter)->correctMotion(checkers, turn, multiple, pixelPos.x, pixelPos.y)) || (temp != NULL && temp->correctMotion(checkers, turn, multiple, pixelPos.x, pixelPos.y))) //если ход правильный 
 					{
 						(*iter)->switchIsMove(); //то не можем двигать спрайт
 						(*iter)->setCorrectPosition((*iter)->getActualX(), (*iter)->getActualY()); //ставим на фактические координаты 
 						cout << "White " << Checker::countWhite << endl;
 						cout << "Black " << Checker::countBlack << endl;
-						if ((!(*iter)->getColor() && (*iter)->getBoardY() == 7) || ((*iter)->getColor() && (*iter)->getBoardY() == 0)) //проверка на стоановление дамки 
+						if (((!(*iter)->getColor() && (*iter)->getBoardY() == 7) || ((*iter)->getColor() && (*iter)->getBoardY() == 0)) && temp == NULL) //проверка на стоановление дамки 
 						{
-							Queen *temp = new Queen((*iter)->getBoardX(), (*iter)->getBoardY(), (*iter)->getColor());
-							temp->initialization();
-							checkers.push_front(temp);
+							Queen* tmp = new Queen((*iter)->getBoardX(), (*iter)->getBoardY(), (*iter)->getColor());
+							tmp->initialization();
+							checkers.push_front(tmp);
+							if ((*iter)->getBoardY() == 0)
+							{
+								turn = false;
+							}
+							if ((*iter)->getBoardY() == 7)
+							{
+								turn = true;
+							}
 							delete *iter;
-							checkers.erase(iter);								
+							checkers.erase(iter);
 						}
 					}
 					else  //если ход не правильный ставим на предыдущее место 
