@@ -57,7 +57,7 @@ int main()
 						if (sqrt((pixelPos.y - y) * (pixelPos.y - y) + (pixelPos.x - x) * (pixelPos.x - x)) <= CHECKERS_RADIUS && turn == (*iter)->getColor())//и при этом координата курсора попадает в спрайт
 						{
 							checkers.splice(checkers.end(), checkers, iter); //переместим активную шашку в конец
-							std::cout << "isClicked!\n";//выводим в консоль сообщение об этом
+							std::cout << "isClicked!\n";
 							dX = pixelPos.x - (*iter)->getActualX();//делаем разность между позицией курсора и спрайта.для корректировки нажатия
 							dY = pixelPos.y - (*iter)->getActualY();//тоже самое по игреку
 							(*iter)->switchIsMove();//можем двигать спрайт							
@@ -95,8 +95,6 @@ int main()
 					{
 						(*iter)->switchIsMove(); //то не можем двигать спрайт
 						(*iter)->setCorrectPosition((*iter)->getActualX(), (*iter)->getActualY()); //ставим на фактические координаты 
-						cout << "White " << Checker::countWhite << endl;
-						cout << "Black " << Checker::countBlack << endl;
 						if (((!(*iter)->getColor() && (*iter)->getBoardY() == 7) || ((*iter)->getColor() && (*iter)->getBoardY() == 0)) && temp == NULL) //проверка на стоановление дамки 
 						{
 							Queen* tmp = new Queen((*iter)->getBoardX(), (*iter)->getBoardY(), (*iter)->getColor());

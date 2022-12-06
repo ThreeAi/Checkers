@@ -43,8 +43,6 @@ void Checker::draw(RenderWindow& window)
 }
 bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int posx, int posy)
 {
-	//cout << this->getBoardX() << " " << this->getBoardY() << " " << this->getPrevBoardX() << " " << this->getPrevBoardY() << endl;
-	//cout << abs(this->getBoardX() - this->getPrevBoardX()) << " " << abs(this->getBoardY() - this->getPrevBoardY()) << endl;
 	if (this->outOfBounds(posx, posy)) //проверка выхода за границы
 	{
 		cout << "OutOfBounds" << endl;
@@ -73,7 +71,6 @@ bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, in
 }
 bool Checker::outOfBounds(int posx, int posy)
 {
-	cout << posx << " " << posy << endl;
 	if (posx  <= 8  || posx >= (WIGTH_EDGE + 8 * LENGTH_TILE)  || posy  <= 8  || posy >= (WIGTH_EDGE + 8 * LENGTH_TILE)) //проверка выхода за границы
 		return true;
 	else
@@ -130,7 +127,6 @@ bool Checker::possibilityStep(list<Checker*>& list, bool& multiple)
 			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7) //если потанциально срубленная шашка находиться не по периметру + если не нашлась шашка мешающая срубу
 			{
 				cout << "PossibleNextStep" << endl;
-				cout << (*iter)->getBoardX() << " " << (*iter)->getBoardY() << endl;
 				multiple = true;     //множественный сруб возможно передвигать только последнюю шашку
 				return true;
 			}
