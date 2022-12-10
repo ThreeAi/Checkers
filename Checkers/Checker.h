@@ -2,6 +2,7 @@
 #include <list>
 #include <SFML/Graphics.hpp>
 #include "Params.h"
+
 using namespace std;
 using namespace sf;
 

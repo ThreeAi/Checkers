@@ -1,5 +1,6 @@
 #include <SFML\Graphics.hpp>
 #include "Params.h"
+
 using namespace sf;
 
 class Board

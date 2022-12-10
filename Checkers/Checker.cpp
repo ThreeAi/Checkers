@@ -1,6 +1,4 @@
-#include <iostream>
 #include "Checker.h"
-#include <list>
 #include <algorithm>
 
 int Checker::countWhite = 12;
@@ -45,17 +43,14 @@ bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, in
 {
 	if (this->outOfBounds(posx, posy)) //проверка выхода за границы
 	{
-		cout << "OutOfBounds" << endl;
 		return false;
 	}
 	if (this->stepOnChecker(list)) //проверка шага на шашку
 	{
-		cout << "StepOnChecker" << endl;
 		return false;
 	}
 	if (this->cutDownChecker(list))
 	{
-		cout << "CorrectCutDown" << endl;
 		if (!this->possibilityStep(list, multiple)) //проверка следущего сруба 
 			turn = !turn;
 		return true;
@@ -63,7 +58,6 @@ bool Checker::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, in
 	else
 	if (this->stepForward()) //проверка на шаг вперед
 	{
-		cout << "WrongStepForward" << endl;
 		return false;
 	}
 	turn = !turn;
@@ -136,13 +130,11 @@ bool Checker::possibilityStep(list<Checker*>& list, bool& multiple)
 			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 
 								   && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7) //если потанциально срубленная шашка находиться не по периметру + если не нашлась шашка мешающая срубу
 			{
-				cout << "PossibleNextStep" << endl;
 				multiple = true;     //множественный сруб возможно передвигать только последнюю шашку
 				return true;
 			}
 		}
 	}
-	cout << "NotPossibleNextStep" << endl;
 	multiple = false;
 	return false;
 }

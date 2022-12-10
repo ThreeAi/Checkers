@@ -1,6 +1,4 @@
-#include <iostream>
 #include "Checker.h"
-#include <list>
 #include <algorithm>
 
 void Queen::initialization()
@@ -60,17 +58,14 @@ bool Queen::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int 
 {
 	if (this->outOfBounds(posx, posy)) //проверка выхода за границы
 	{
-		cout << "QueenOutOfBounds" << endl;
 		return false;
 	}
 	if (this->stepOnChecker(list)) //проверка шага на шашку
 	{
-		cout << "QueenStepOnChecker" << endl;
 		return false;
 	}
 	if (this->cutDownChecker(list))
 	{
-		cout << "QueenCorrectCutDown" << endl;
 		if (!this->possibilityStep(list, multiple)) //проверка следущего сруба 
 			turn = !turn;
 		return true;
@@ -78,7 +73,6 @@ bool Queen::correctMotion(list<Checker*>& list, bool& turn, bool& multiple, int 
 	else
 		if (this->stepForward(list)) //проверка на шаг вперед
 		{
-			cout << "QueenWrongStep" << endl;
 			return false;
 		}
 	turn = !turn;
@@ -101,14 +95,11 @@ bool Queen::possibilityStep(list<Checker*>& list, bool& multiple)
 			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 
 								   && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7) //если потанциально срубленная шашка находиться не по периметру + если не нашлась шашка мешающая срубу
 			{
-				cout << "PossibleNextStep" << endl;
-				cout << (*iter)->getBoardX() << " " << (*iter)->getBoardY() << endl;
 				multiple = true;     //множественный сруб возможно передвигать только последнюю шашку
 				return true;
 			}
 		}
 	}
-	cout << "NotPossibleNextStep" << endl;
 	multiple = false;
 	return false;
 }

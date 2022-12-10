@@ -1,12 +1,11 @@
-﻿#include <iostream>
-#include <list>
+﻿#include <list>
 #include <algorithm>
 #include <SFML/Graphics.hpp>
 #include "Board.h"
 #include "Checker.h"
 
 using namespace sf;
-using namespace std;
+
 int main()
 {
 	Font font;
@@ -57,7 +56,6 @@ int main()
 						if (sqrt((pixelPos.y - y) * (pixelPos.y - y) + (pixelPos.x - x) * (pixelPos.x - x)) <= CHECKERS_RADIUS && turn == (*iter)->getColor())//и при этом координата курсора попадает в спрайт
 						{
 							checkers.splice(checkers.end(), checkers, iter); //переместим активную шашку в конец
-							std::cout << "isClicked!\n";
 							dX = pixelPos.x - (*iter)->getActualX();//делаем разность между позицией курсора и спрайта.для корректировки нажатия
 							dY = pixelPos.y - (*iter)->getActualY();//тоже самое по игреку
 							(*iter)->switchIsMove();//можем двигать спрайт							
@@ -72,7 +70,6 @@ int main()
 					int x = (*iter)->getActualX() + 35;
 					if (sqrt((pixelPos.y - y) * (pixelPos.y - y) + (pixelPos.x - x) * (pixelPos.x - x)) <= CHECKERS_RADIUS && turn == (*iter)->getColor())//и при этом координата курсора попадает в спрайт
 					{
-						std::cout << "isClicked!\n";//выводим в консоль сообщение об этом
 						dX = pixelPos.x - (*iter)->getActualX();//делаем разность между позицией курсора и спрайта.для корректировки нажатия
 						dY = pixelPos.y - (*iter)->getActualY();//тоже самое по игреку
 						(*iter)->switchIsMove();//можем двигать спрайт							
