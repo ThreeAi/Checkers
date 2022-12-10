@@ -3,7 +3,6 @@
 #include <list>
 #include <algorithm>
 
-//Queen::Queen(int bx, int by, bool color) : Checker(bx, by, color) {};
 void Queen::initialization()
 {
 	textChecker.loadFromFile("images/checker.png");
@@ -21,10 +20,13 @@ bool Queen::stepForward(list<Checker*>& list)
 		return true;
 	auto find = find_if(list.begin(), list.end(), [this](Checker* c)
 		{
-			return c->getColor() == this->getColor() && ((c->getBoardX() - this->getPrevBoardX()) * (this->getBoardY() - this->getPrevBoardY()) - ((c->getBoardY() - this->getPrevBoardY()) * (this->getBoardX() - this->getPrevBoardX()))) == 0 &&
-				((c->getBoardX() > this->getPrevBoardX() && c->getBoardX() < this->getBoardX()) || (c->getBoardX() < this->getPrevBoardX() && c->getBoardX() > this->getBoardX()));
+			return c->getColor() == this->getColor() && 
+				((c->getBoardX() - this->getPrevBoardX()) * (this->getBoardY() - this->getPrevBoardY()) - 
+				((c->getBoardY() - this->getPrevBoardY()) * (this->getBoardX() - this->getPrevBoardX()))) == 0 &&
+				((c->getBoardX() > this->getPrevBoardX() && c->getBoardX() < this->getBoardX()) || 
+				 (c->getBoardX() < this->getPrevBoardX() && c->getBoardX() > this->getBoardX()));
 		});
-	if (abs(this->getBoardX() - this->getPrevBoardX()) == abs(this->getBoardY() - this->getPrevBoardY()) && find != list.end())
+	if ( find != list.end())
 	{
 		return true;
 	}
@@ -32,12 +34,17 @@ bool Queen::stepForward(list<Checker*>& list)
 }
 bool Queen::cutDownChecker(list<Checker*>& list)
 {
+	if (!(abs(this->getBoardX() - this->getPrevBoardX()) == abs(this->getBoardY() - this->getPrevBoardY())))
+		return true;
 	auto find = find_if(list.begin(), list.end(), [this](Checker* c)
 		{
-			return c->getColor() != this->getColor() && ((c->getBoardX() - this->getPrevBoardX()) * (this->getBoardY() - this->getPrevBoardY()) - ((c->getBoardY() - this->getPrevBoardY()) * (this->getBoardX() - this->getPrevBoardX()))) == 0 &&
-				((c->getBoardX() > this->getPrevBoardX() && c->getBoardX() < this->getBoardX()) || (c->getBoardX() < this->getPrevBoardX() && c->getBoardX() > this->getBoardX()));
+			return c->getColor() != this->getColor() && 
+				((c->getBoardX() - this->getPrevBoardX()) * (this->getBoardY() - this->getPrevBoardY()) - 
+				((c->getBoardY() - this->getPrevBoardY()) * (this->getBoardX() - this->getPrevBoardX()))) == 0 &&
+				((c->getBoardX() > this->getPrevBoardX() && c->getBoardX() < this->getBoardX()) || 
+				 (c->getBoardX() < this->getPrevBoardX() && c->getBoardX() > this->getBoardX()));
 		});
-	if (abs(this->getBoardX() - this->getPrevBoardX()) == abs(this->getBoardY() - this->getPrevBoardY()) && find != list.end())
+	if (  find != list.end())
 	{
 		if ((*find)->getColor())
 			countBlack--;
@@ -81,14 +88,18 @@ bool Queen::possibilityStep(list<Checker*>& list, bool& multiple)
 {
 	for (auto iter = list.begin(); iter != list.end(); iter++)
 	{
-		if (((*iter)->getColor() != this->getColor()) && (abs((*iter)->getBoardX() - this->getBoardX()) == abs((*iter)->getBoardY() - this->getBoardY())))  //поиск шашки которую можно срубить 
+		if (((*iter)->getColor() != this->getColor()) && 
+			(abs((*iter)->getBoardX() - this->getBoardX()) == abs((*iter)->getBoardY() - this->getBoardY())))  //поиск шашки которую можно срубить 
 		{
-			cout << (*iter)->getBoardX() << " " << (*iter)->getBoardY() << endl;
 			auto find = find_if(list.begin(), list.end(), [this, iter](Checker* c) //поиск шашки которая может помешать срубу
 				{
-					return c->getBoardX() == this->getBoardX() - ((this->getBoardX() - (*iter)->getBoardX())) - (this->getBoardX() - (*iter)->getBoardX())/abs((this->getBoardX() - (*iter)->getBoardX())) && c->getBoardY() == this->getBoardY() - ((this->getBoardY() - (*iter)->getBoardY())) - (this->getBoardY() - (*iter)->getBoardY()) / abs((this->getBoardY() - (*iter)->getBoardY()));
+					return c->getBoardX() == this->getBoardX() - ((this->getBoardX() - (*iter)->getBoardX())) 
+						- (this->getBoardX() - (*iter)->getBoardX()) / abs((this->getBoardX() - (*iter)->getBoardX())) 
+						&& c->getBoardY() == this->getBoardY() - ((this->getBoardY() - (*iter)->getBoardY())) 
+						- (this->getBoardY() - (*iter)->getBoardY()) / abs((this->getBoardY() - (*iter)->getBoardY()));
 				});
-			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7) //если потанциально срубленная шашка находиться не по периметру + если не нашлась шашка мешающая срубу
+			if (find == list.end() && (*iter)->getBoardX() != 0 && (*iter)->getBoardX() != 7 
+								   && (*iter)->getBoardY() != 0 && (*iter)->getBoardY() != 7) //если потанциально срубленная шашка находиться не по периметру + если не нашлась шашка мешающая срубу
 			{
 				cout << "PossibleNextStep" << endl;
 				cout << (*iter)->getBoardX() << " " << (*iter)->getBoardY() << endl;

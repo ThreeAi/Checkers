@@ -5,7 +5,7 @@ using namespace sf;
 class Board
 {
 private:
-	String TileBoard[LENGTH_TILE] = {
+	String TileBoard[HEIGHT_BOARD] = {
 	"01010101",
 	"10101010",
 	"01010101",

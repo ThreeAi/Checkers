@@ -72,7 +72,6 @@ int main()
 					int x = (*iter)->getActualX() + 35;
 					if (sqrt((pixelPos.y - y) * (pixelPos.y - y) + (pixelPos.x - x) * (pixelPos.x - x)) <= CHECKERS_RADIUS && turn == (*iter)->getColor())//и при этом координата курсора попадает в спрайт
 					{
-						//checkers.splice(checkers.end(), checkers, iter); //переместим активную шашку в конец
 						std::cout << "isClicked!\n";//выводим в консоль сообщение об этом
 						dX = pixelPos.x - (*iter)->getActualX();//делаем разность между позицией курсора и спрайта.для корректировки нажатия
 						dY = pixelPos.y - (*iter)->getActualY();//тоже самое по игреку
@@ -89,7 +88,6 @@ int main()
 			{
 				if ((*iter)->getIsMove())
 				{
-					//cout << ((pixelPos.x - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE << " " << ((pixelPos.y - WIGTH_EDGE) / LENGTH_TILE) * LENGTH_TILE + WIGTH_EDGE << endl;
 					Queen* temp = dynamic_cast<Queen*>(*iter); //если дамка 
 					if (((temp == NULL) && (*iter)->correctMotion(checkers, turn, multiple, pixelPos.x, pixelPos.y)) || (temp != NULL && temp->correctMotion(checkers, turn, multiple, pixelPos.x, pixelPos.y))) //если ход правильный 
 					{
